@@ -1,9 +1,27 @@
 ---
-- name: "Fetch java from Oracle"
-  shell: "wget --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{jdk_url}} -O /tmp/java8.tar.gz"
+- name: "Fetch java from s3"
+  s3:
+    bucket: us-west-2-mgage-artifact-store
+    region: "{{ region }}"
+    object: /oracle/java8.tar.gz
+    dest: /tmp/java8.tar.gz
+    security_token: "{{ aws_session_token }}"
+    mode: get
+  when: aws_session_token is defined
+
+- name: "Fetch java from s3"
+  s3:
+    bucket: us-west-2-mgage-artifact-store
+    region: "{{ region }}"
+    object: /oracle/java8.tar.gz
+    dest: /tmp/java8.tar.gz
+    mode: get
+  when: aws_session_token is not defined
 
 - name: "Unpack java to install path"
-  shell: tar -zxf /tmp/java8.tar.gz -C "{{jdk_install_path}}"
+  unarchive:
+    src: /tmp/java8.tar.gz
+    dest: "{{jdk_install_path}}"
 
 - name: "Update system to use new java"
   shell: update-alternatives --install /usr/bin/java java "/opt/jdk/jdk{{jdk_version}}/bin/java" 100

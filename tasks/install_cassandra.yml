@@ -5,12 +5,14 @@
   when: (ansible_distribution in ['Debian','Ubuntu'])
   register: result_apt
 
-- name: "Fetch the repository key"
-  shell: curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
+- name: "Fetch the Datastax repository key"
+  apt_key:
+    url: http://debian.datastax.com/debian/repo_key
+    state: present
   when: result_apt.changed
   become_user: root
 
-- name: "Update the system cache"
+- name: "Update the apt cache"
   action: apt update_cache=yes
   when: result_apt.changed
 

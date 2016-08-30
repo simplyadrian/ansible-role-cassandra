@@ -8,8 +8,5 @@
     group: root
   vars_files:
     - vars/test_cassandra.yml
-  pre_tasks:
-    - action: apt pkg=wget state=installed
-    - action: apt pkg=curl state=installed
   roles:
     - ansible-role-cassandra

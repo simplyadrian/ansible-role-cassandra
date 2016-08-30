@@ -1,5 +1,5 @@
 ---
-jdk_url: "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz"
+region: "us-west-2"
 jdk_install_path: "/opt/jdk"
 jdk_version: "1.8.0_102"
 

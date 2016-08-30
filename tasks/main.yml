@@ -30,7 +30,8 @@
   shell: "dpkg -s cassandra|grep Version|cut -d' ' -f2"
   register: cassandra_version_result
 
-- debug: msg="Cassandra {{cassandra_version_result.stdout}} JDK {{java_version_result.stdout}}"
+- debug:
+    msg: "The node currently has Cassandra version '{{cassandra_version_result.stdout}}' and the Java JDK version '{{java_version_result.stdout}}' installed"
 
 - name: "Include install_cassandra task"
   include: "install_cassandra.yml"
