@@ -1,0 +1,26 @@
+---
+- name: "Add the datastax cassandra repository to the system"
+  apt_repository: repo="deb http://debian.datastax.com/datastax-ddc 3.6 main" state=present
+  become_user: root
+  when: (ansible_distribution in ['Debian','Ubuntu'])
+  register: result_apt
+
+- name: "Fetch the Datastax repository key"
+  apt_key:
+    url: http://debian.datastax.com/debian/repo_key
+    state: present
+  when: result_apt.changed
+  become_user: root
+
+- name: "Update the apt cache"
+  action: apt update_cache=yes
+  when: result_apt.changed
+
+- name: "Install cassandra 3.x"
+  action: apt pkg="{{item}}" state=installed
+  with_items:
+    - datastax-ddc
+
+- name: "Start the cassandra service"
+  service: name=cassandra state=started
+  become: true

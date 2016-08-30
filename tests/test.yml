@@ -1,0 +1,12 @@
+---
+- name: test - create cassandra ring 
+  hosts: test
+  remote_user: root
+  become: yes
+  vars:
+    user: root
+    group: root
+  vars_files:
+    - vars/test_cassandra.yml
+  roles:
+    - ansible-role-cassandra
