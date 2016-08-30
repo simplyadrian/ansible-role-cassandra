@@ -1,0 +1,15 @@
+---
+- name: test - create cassandra ring 
+  hosts: test
+  remote_user: root
+  become: yes
+  vars:
+    user: root
+    group: root
+  vars_files:
+    - vars/test_cassandra.yml
+  pre_tasks:
+    - action: apt pkg=wget state=installed
+    - action: apt pkg=curl state=installed
+  roles:
+    - ansible-role-cassandra
